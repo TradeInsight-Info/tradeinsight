@@ -1,0 +1,40 @@
+---
+title: Your first query
+date: 2026-06-05
+description: Pull the 10 most recent trades by a U.S. politician.
+order: 3
+---
+
+This guide walks through fetching the 10 most recent disclosed trades by a single politician.
+
+## Request
+
+```bash
+curl -H "Authorization: Bearer $TRADEINSIGHT_API_KEY" \
+  "https://api.tradeinsight.info/v1/politicians/nancy-pelosi/trades?limit=10"
+```
+
+## Response
+
+```json
+{
+  "data": [
+    {
+      "ticker": "NVDA",
+      "type": "buy",
+      "amount_range": "$1,000,000-$5,000,000",
+      "trade_date": "2024-01-08",
+      "filed_date": "2024-01-15"
+    }
+  ],
+  "meta": { "total": 4821, "page": 1, "per_page": 10 }
+}
+```
+
+## Filtering
+
+Pass `?since=2024-01-01` to scope to recent trades, or `?ticker=NVDA` to filter by ticker.
+
+## Next
+
+Browse the full endpoint reference on [the Data API page](/data-api).

@@ -1,0 +1,31 @@
+---
+title: Installation
+date: 2026-06-05
+description: Sign up, grab your API key, and confirm it works.
+order: 2
+---
+
+The Data API is a plain REST endpoint — no SDK required. You can use it from any HTTP client.
+
+## 1. Get an API key
+
+Sign up at [auth.tradeinsight.info](https://auth.tradeinsight.info/signup). The free beta tier gives you 1,000 requests/day; no credit card is needed.
+
+Once logged in, generate a key from the dashboard. Keep it secret — it grants access to your account's request quota.
+
+## 2. Confirm it works
+
+```bash
+curl -H "Authorization: Bearer $TRADEINSIGHT_API_KEY" \
+  https://api.tradeinsight.info/v1/health
+```
+
+You should see:
+
+```json
+{ "status": "ok" }
+```
+
+## 3. Next
+
+Ready to query real data? Head to [your first query](/docs/first-query).
