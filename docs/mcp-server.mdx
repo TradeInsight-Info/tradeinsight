@@ -1,0 +1,206 @@
+---
+title: MCP server
+date: 2026-06-28
+description: Use TradeInsight as a Model Context Protocol server in Claude Code, Cursor, or any MCP client.
+order: 5
+---
+
+TradeInsight provides a hosted MCP server (Streamable-HTTP, JSON-RPC 2.0) that works with any MCP-compatible client. Same API key and rate limits as the REST API.
+
+## Endpoint
+
+```
+https://api.tradeinsight.info/mcp
+```
+
+## Setup
+
+##### Claude Code
+
+```bash
+claude mcp add tradeinsight --transport http \
+  https://api.tradeinsight.info/mcp \
+  --header "Authorization: Bearer YOUR_KEY"
+```
+
+##### Cursor
+
+Add to `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "tradeinsight": {
+      "url": "https://api.tradeinsight.info/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_KEY"
+      }
+    }
+  }
+}
+```
+
+##### Claude Desktop
+
+Add to `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "tradeinsight": {
+      "type": "http",
+      "url": "https://api.tradeinsight.info/mcp",
+      "headers": { "Authorization": "Bearer YOUR_KEY" }
+    }
+  }
+}
+```
+
+---
+
+## Available tools
+
+| Tool | Description |
+|------|-------------|
+| `get_price_history` | Daily OHLCV for a ticker (up to 30y+, splits + dividends adjusted) |
+| `get_top_movers` | Tickers ranked by volume, moving average, or price change |
+| `search_ticker` | Find tickers by company name substring |
+
+---
+
+## Tool reference
+
+##### get_price_history
+
+Get daily OHLCV price history for a stock ticker.
+
+**Arguments:**
+
+| Arg | Type | Required | Description |
+|-----|------|----------|-------------|
+| `ticker` | string | yes | Ticker symbol, e.g. `"AAPL"` |
+| `start_date` | string | no | Start date YYYY-MM-DD (default: 1 year ago) |
+| `end_date` | string | no | End date YYYY-MM-DD (default: today) |
+| `limit` | integer | no | Max rows 1–1000 (default 365) |
+| `adjusted` | boolean | no | Use adjusted prices and volume (default true) |
+
+**Example request (JSON-RPC):**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "tools/call",
+  "id": 1,
+  "params": {
+    "name": "get_price_history",
+    "arguments": {
+      "ticker": "AAPL",
+      "start_date": "2024-01-01",
+      "end_date": "2024-12-31"
+    }
+  }
+}
+```
+
+**Example with curl:**
+
+```bash
+curl -X POST https://api.tradeinsight.info/mcp \
+  -H "Authorization: Bearer YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"tools/call","id":1,"params":{"name":"get_price_history","arguments":{"ticker":"AAPL","start_date":"2024-01-01","end_date":"2024-12-31"}}}'
+```
+
+---
+
+##### get_top_movers
+
+Get tickers ranked by volume, 20-day moving average, or price change.
+
+**Arguments:**
+
+| Arg | Type | Required | Description |
+|-----|------|----------|-------------|
+| `sort_by` | string | yes | One of: `volume`, `moving_average`, `price_change` |
+| `limit` | integer | no | Max results 1–50 (default 10) |
+
+**Example request:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "tools/call",
+  "id": 2,
+  "params": {
+    "name": "get_top_movers",
+    "arguments": { "sort_by": "volume", "limit": 5 }
+  }
+}
+```
+
+---
+
+##### search_ticker
+
+Search for stock tickers by company name substring.
+
+**Arguments:**
+
+| Arg | Type | Required | Description |
+|-----|------|----------|-------------|
+| `query` | string | yes | Company name substring, e.g. `"apple"` |
+| `limit` | integer | no | Max results 1–50 (default 20) |
+
+**Example request:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "tools/call",
+  "id": 3,
+  "params": {
+    "name": "search_ticker",
+    "arguments": { "query": "nvidia" }
+  }
+}
+```
+
+---
+
+## Protocol details
+
+The server implements MCP protocol version `2024-11-05` over Streamable-HTTP.
+
+**Supported methods:**
+
+| Method | Description |
+|--------|-------------|
+| `initialize` | Handshake — returns server capabilities |
+| `notifications/initialized` | Client acknowledgement (returns 204) |
+| `tools/list` | Returns the tool manifest (no quota charge) |
+| `tools/call` | Execute a tool (counts against rate limit) |
+
+**Response format:**
+
+Successful tool calls return:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "content": [{ "type": "text", "text": "{...json data...}" }]
+  }
+}
+```
+
+**Error codes:**
+
+| Code | Meaning |
+|------|---------|
+| -32700 | Parse error — invalid JSON |
+| -32601 | Method not found |
+| -32602 | Invalid params |
+| -32001 | Unauthorized — invalid or missing key |
+| -32002 | No data found |
+| -32029 | Rate limited |

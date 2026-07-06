@@ -1,0 +1,181 @@
+---
+title: Insight data — Congress & Insider trades
+date: 2026-06-28
+description: Query congressional and corporate insider trade disclosures via the REST API.
+order: 4
+---
+
+TradeInsight provides two insight datasets: **congressional trades** (House and Senate disclosures) and **corporate insider trades** (SEC Form 4 filings).
+
+## Base URL
+
+```
+https://api.tradeinsight.info/trading-data/v1
+```
+
+All requests require a Bearer token:
+
+```bash
+curl -H "Authorization: Bearer YOUR_KEY" \
+  "https://api.tradeinsight.info/trading-data/v1/congress/v1/trades?limit=10"
+```
+
+---
+
+## Congressional trades
+
+**`GET /congress/v1/trades`**
+
+Returns disclosed trades by U.S. Congress members, ordered by filing date (newest first).
+
+**Parameters:**
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `ticker` | string | Filter by ticker symbol (e.g. `AAPL`) |
+| `trader_uuid` | string | Filter by congress member UUID |
+| `search_query` | string | Full-text search across trader names and tickers |
+| `filing_date_gte` | date | Filing date from (YYYY-MM-DD) |
+| `filing_date_lte` | date | Filing date to (YYYY-MM-DD) |
+| `traded_date_gte` | date | Trade date from (YYYY-MM-DD) |
+| `traded_date_lte` | date | Trade date to (YYYY-MM-DD) |
+| `ordering` | string | Sort field (e.g. `-value`, `-filing_date`, `traded_date`) |
+| `limit` | integer | Max rows, 1–200 (default 50) |
+| `offset` | integer | Pagination offset (default 0) |
+
+**Example — recent NVDA trades by congress members:**
+
+```bash
+curl -H "Authorization: Bearer YOUR_KEY" \
+  "https://api.tradeinsight.info/trading-data/v1/congress/v1/trades?ticker=NVDA&limit=5"
+```
+
+**Response:**
+
+```json
+{
+  "data": [
+    {
+      "trader_name": "Nancy Pelosi",
+      "trader_uuid": "f2b9e3a1-4c8d-5e6f-a7b8-c9d0e1f2a3b4",
+      "ticker": "NVDA",
+      "issuer_name": "NVIDIA Corp",
+      "transaction_type": "buy",
+      "value": 1500000,
+      "traded_date": "2024-01-08",
+      "filing_date": "2024-01-15",
+      "chamber": "House"
+    }
+  ],
+  "total": 42,
+  "limit": 5,
+  "offset": 0
+}
+```
+
+---
+
+**`GET /congress/v1/members`**
+
+List congress members with optional name search.
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `trader_name` | string | Filter by name |
+| `limit` | integer | Max rows, 1–200 (default 50) |
+| `offset` | integer | Pagination offset (default 0) |
+
+```bash
+curl -H "Authorization: Bearer YOUR_KEY" \
+  "https://api.tradeinsight.info/trading-data/v1/congress/v1/members?trader_name=pelosi"
+```
+
+---
+
+## Corporate insider trades
+
+**`GET /corporate/v1/insider-trades`**
+
+Returns SEC Form 4 filings — purchases and sales by corporate executives and directors.
+
+**Parameters:**
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `ticker` | string | Filter by ticker symbol |
+| `issuer_name` | string | Filter by company name |
+| `exact_trader_name` | string | Filter by exact insider name |
+| `filing_date_gte` | date | Filing date from (YYYY-MM-DD) |
+| `filing_date_lte` | date | Filing date to (YYYY-MM-DD) |
+| `limit` | integer | Max rows, 1–200 (default 50) |
+| `offset` | integer | Pagination offset (default 0) |
+
+**Example — recent Apple insider trades:**
+
+```bash
+curl -H "Authorization: Bearer YOUR_KEY" \
+  "https://api.tradeinsight.info/trading-data/v1/corporate/v1/insider-trades?ticker=AAPL&limit=5"
+```
+
+**Response:**
+
+```json
+{
+  "data": [
+    {
+      "trader_name": "Tim Cook",
+      "ticker": "AAPL",
+      "issuer_name": "Apple Inc",
+      "title": "CEO",
+      "transaction_type": "S - Sale",
+      "size": 50000,
+      "price": 195.50,
+      "shares_held": 3280000,
+      "traded_date": "2024-06-10",
+      "filing_date": "2024-06-12"
+    }
+  ],
+  "total": 128,
+  "limit": 5,
+  "offset": 0
+}
+```
+
+---
+
+**`GET /corporate/v1/insiders`**
+
+List corporate insiders with optional name search.
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `trader_name` | string | Filter by insider name |
+| `limit` | integer | Max rows, 1–200 (default 50) |
+| `offset` | integer | Pagination offset (default 0) |
+
+```bash
+curl -H "Authorization: Bearer YOUR_KEY" \
+  "https://api.tradeinsight.info/trading-data/v1/corporate/v1/insiders?trader_name=cook"
+```
+
+---
+
+## Pagination
+
+All list endpoints return the same envelope:
+
+```json
+{ "data": [...], "total": 4821, "limit": 50, "offset": 0 }
+```
+
+Use `limit` and `offset` to page through results:
+
+```bash
+?limit=50&offset=100   # rows 101–150
+```
+
+## Tier restrictions
+
+- **Free** — TBD
+- **Beta** — last 12 months by filing date
+- **Paid** — full history back to 2012
