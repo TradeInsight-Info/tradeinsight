@@ -13,5 +13,5 @@ jobs:
           curl -sf -X POST \
             -H "Authorization: Bearer ${{ secrets.MONO_REPO_DISPATCH_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/TradeInsight-Info/tradeinsight/dispatches \
+            https://api.github.com/repos/TradeInsight-Info/tradeinsight-mono-repo/dispatches \
             -d '{"event_type":"content-updated"}'
