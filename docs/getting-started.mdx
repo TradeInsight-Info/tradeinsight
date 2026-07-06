@@ -1,19 +1,31 @@
 ---
 title: Getting started
 date: 2026-06-05
-description: A 60-second overview of TradeInsight Notifications and the Data API.
+description: A 60-second overview of the TradeInsight Data API.
 order: 1
 ---
 
-TradeInsight surfaces what U.S. Congress members, corporate insiders, and the White House are trading — in real time. Two products:
+TradeInsight surfaces what U.S. Congress members and corporate insiders are trading — in real time. The Data API gives you programmatic access to all of it.
 
-- **Notifications** ($10/mo, free trial) — email or webhook alerts when a tracked trade is filed.
-- **Data API** (free beta) — programmatic access to the same data, with historical coverage back to 2012.
+## What's available
+
+- **Congressional trades** — every House and Senate disclosure since 2012, continuously updated as filings land.
+- **Corporate insider trades** — SEC Form 4 filings (executive/director purchases and sales).
+- **OHLCV price history** — 30y+ of daily US equity data, 7,000+ tickers, splits + dividends adjusted.
+- **Market tickers** — company reference data with end-of-day price, % change, and market cap.
+- **MCP server** — native Model Context Protocol for AI agents (Claude Code, Cursor, etc.).
+
+## Tiers
+
+| Tier | Access | History depth |
+|------|--------|---------------|
+| Free (beta) | 1,000 req/day | Last 12 months (congress/insider), 1 year (OHLCV) |
+| Paid | Higher limits | Full history |
 
 ## What's in this guide
 
 1. [Installation](/docs/installation) — sign up and get an API key.
-2. [Your first query](/docs/first-query) — pull a politician's recent trades in five lines.
+2. [Your first query](/docs/first-query) — pull congressional trades in five lines.
 
 ## Get help
 
