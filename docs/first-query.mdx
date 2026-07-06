@@ -1,17 +1,17 @@
 ---
 title: Your first query
 date: 2026-06-05
-description: Pull the 10 most recent trades by a U.S. politician.
+description: Pull the 10 most recent congressional trades.
 order: 3
 ---
 
-This guide walks through fetching the 10 most recent disclosed trades by a single politician.
+This guide walks through fetching the 10 most recent disclosed congressional trades.
 
 ## Request
 
 ```bash
 curl -H "Authorization: Bearer $TRADEINSIGHT_API_KEY" \
-  "https://api.tradeinsight.info/v1/politicians/nancy-pelosi/trades?limit=10"
+  "https://api.tradeinsight.info/trading-data/v1/congress/v1/trades?limit=10"
 ```
 
 ## Response
@@ -20,21 +20,61 @@ curl -H "Authorization: Bearer $TRADEINSIGHT_API_KEY" \
 {
   "data": [
     {
+      "trader_name": "Nancy Pelosi",
+      "trader_uuid": "f2b9e3a1-4c8d-5e6f-a7b8-c9d0e1f2a3b4",
       "ticker": "NVDA",
-      "type": "buy",
-      "amount_range": "$1,000,000-$5,000,000",
-      "trade_date": "2024-01-08",
-      "filed_date": "2024-01-15"
+      "issuer_name": "NVIDIA Corp",
+      "transaction_type": "buy",
+      "value": 1500000,
+      "traded_date": "2024-01-08",
+      "filing_date": "2024-01-15"
     }
   ],
-  "meta": { "total": 4821, "page": 1, "per_page": 10 }
+  "total": 4821,
+  "limit": 10,
+  "offset": 0
 }
 ```
 
 ## Filtering
 
-Pass `?since=2024-01-01` to scope to recent trades, or `?ticker=NVDA` to filter by ticker.
+Filter by trader, ticker, or date range:
+
+```bash
+# By ticker
+?ticker=NVDA
+
+# By congress member (use their UUID from a /congress/v1/members lookup)
+?trader_uuid=f2b9e3a1-4c8d-5e6f-a7b8-c9d0e1f2a3b4
+
+# By filing date range
+?filing_date_gte=2024-01-01&filing_date_lte=2024-12-31
+
+# By trade date range
+?traded_date_gte=2024-01-01
+
+# Full-text search across trader names and tickers
+?search_query=pelosi
+```
+
+## Sorting
+
+Default order is newest filings first (`-filing_date, -traded_date`). You can sort by:
+
+```bash
+?ordering=-value        # largest trades first
+?ordering=traded_date   # oldest first
+?ordering=-filing_date  # newest filings first (default)
+```
+
+## Pagination
+
+Use `limit` (max 200) and `offset`:
+
+```bash
+?limit=50&offset=100   # rows 101–150
+```
 
 ## Next
 
-Browse the full endpoint reference on [the Data API page](/data-api).
+See also: [corporate insider trades](/docs) (`/corporate/v1/insider-trades`) and [market tickers](/docs) (`/market/v1/tickers`).
