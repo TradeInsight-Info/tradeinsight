@@ -1,20 +1,86 @@
 ---
 title: Your first query
 date: 2026-06-05
-description: Pull the 10 most recent congressional trades.
+description: Fetch stock price history and recent congressional trade disclosures with curl.
 order: 3
 ---
 
-This guide walks through fetching the 10 most recent disclosed congressional trades.
+This guide walks through two real queries: daily price history for a stock, and the most recent disclosed congressional trades.
 
-## Request
+## Stock price history
+
+Fetch the last 10 trading days of AAPL OHLCV data:
+
+```bash
+curl -H "Authorization: Bearer $TRADEINSIGHT_API_KEY" \
+  "https://api.tradeinsight.info/trading-data/v1/ohlc?ticker=AAPL&limit=10"
+```
+
+Response shape:
+
+```json
+{
+  "data": [
+    {
+      "ticker": "AAPL",
+      "name": "Apple Inc.",
+      "date": "2024-06-10",
+      "open": 193.12,
+      "high": 194.99,
+      "low": 192.55,
+      "close": 194.35,
+      "volume": 53421000,
+      "adj_open": 193.12,
+      "adj_high": 194.99,
+      "adj_low": 192.55,
+      "adj_close": 194.35
+    }
+  ],
+  "total": 252,
+  "limit": 10,
+  "offset": 0
+}
+```
+
+Every row includes both raw prices and split/dividend-adjusted prices (`adj_*`). The `total` field is the number of matching rows before pagination.
+
+### Date range
+
+Add `start` and `end` (YYYY-MM-DD) to scope the results:
+
+```bash
+curl -H "Authorization: Bearer $TRADEINSIGHT_API_KEY" \
+  "https://api.tradeinsight.info/trading-data/v1/ohlc?ticker=AAPL&start=2024-01-01&end=2024-06-30"
+```
+
+### Pagination
+
+Use `limit` (1–1000, default 100) and `offset` to page through results:
+
+```bash
+curl -H "Authorization: Bearer $TRADEINSIGHT_API_KEY" \
+  "https://api.tradeinsight.info/trading-data/v1/ohlc?ticker=AAPL&limit=100&offset=100"
+```
+
+### Sort by moving average or volatility
+
+Pass `sort=ma` to rank by 20-day moving average of close price (descending), or `sort=vol` to rank by 20-day price volatility:
+
+```bash
+curl -H "Authorization: Bearer $TRADEINSIGHT_API_KEY" \
+  "https://api.tradeinsight.info/trading-data/v1/ohlc?sort=vol&limit=20"
+```
+
+## Congressional trades
+
+Fetch the 10 most recent disclosed congressional trades:
 
 ```bash
 curl -H "Authorization: Bearer $TRADEINSIGHT_API_KEY" \
   "https://api.tradeinsight.info/trading-data/v1/congress/v1/trades?limit=10"
 ```
 
-## Response
+### Response
 
 ```json
 {
@@ -36,7 +102,7 @@ curl -H "Authorization: Bearer $TRADEINSIGHT_API_KEY" \
 }
 ```
 
-## Filtering
+### Filtering
 
 Filter by trader, ticker, or date range:
 
@@ -57,7 +123,7 @@ Filter by trader, ticker, or date range:
 ?search_query=pelosi
 ```
 
-## Sorting
+### Sorting
 
 Default order is newest filings first (`-filing_date, -traded_date`). You can sort by:
 
@@ -67,7 +133,7 @@ Default order is newest filings first (`-filing_date, -traded_date`). You can so
 ?ordering=-filing_date  # newest filings first (default)
 ```
 
-## Pagination
+### Pagination
 
 Use `limit` (max 200) and `offset`:
 

@@ -13,13 +13,12 @@ TradeInsight surfaces what U.S. Congress members and corporate insiders are trad
 - **Corporate insider trades** — SEC Form 4 filings (executive/director purchases and sales).
 - **OHLCV price history** — 30y+ of daily US equity data, 7,000+ tickers, splits + dividends adjusted.
 - **Market tickers** — company reference data with end-of-day price, % change, and market cap.
-- **MCP server** — native Model Context Protocol for AI agents (Claude Code, Cursor, etc.).
+- **MCP server** — native Model Context Protocol for AI agents (Claude Code, Cursor, etc.), served at `api.tradeinsight.info/mcp`.
 
 ## Tiers
 
 | Tier | Access | History depth |
 |------|--------|---------------|
-| Free | TBD | TBD |
 | Beta | 800 req/min | Last 12 months (congress/insider), 1 year (OHLCV) |
 | Paid | More | Full history |
 
@@ -28,6 +27,13 @@ TradeInsight surfaces what U.S. Congress members and corporate insiders are trad
 Full endpoint documentation (interactive, no auth required):
 
 → [**OpenAPI docs**](https://api.tradeinsight.info/trading-data/v1/docs)
+
+## What you can build
+
+- Screen for tickers where both a congress member and an insider bought in the same week.
+- Build a backtest that combines price history with politician trade dates.
+- Pipe disclosures into your own alerting pipeline.
+- Ask an AI assistant to query the data for you via the MCP server.
 
 ## What's in this guide
 
