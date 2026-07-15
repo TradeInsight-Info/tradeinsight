@@ -5,7 +5,18 @@ description: Release notes for the ti finance & trading CLI agent.
 
 #### v0.1.3 — 2026-07-16
 
-##### Skills
-
 - New **market-cycles** skill — ask about calendar and seasonal patterns ("sell in May" / the Halloween indicator, the January effect, the BTC halving cycle, the presidential-election cycle) and ti backtests the claim on real data with proper scrutiny for tiny samples and data-mining, instead of repeating the folklore.
 - Value-investing analysis now engages on more natural phrasings — moat, intrinsic / fair value, margin of safety, or "is X a good long-term buy".
+
+#### v0.1.0 — 2026-07-15
+
+- Meet **ti** — a finance-first analysis and quant agent that researches and backtests strategies, builds and stress-tests portfolios, and makes sense of market data. It writes code in service of insight, and never places orders or connects to a broker — you stay in control.
+- Backtest a strategy or a full portfolio allocation on historical data — risk-parity, min-vol, vol-target, momentum, DCA/AIP, and leverage — in one local framework.
+- Verify market strategies, cycles, and seasonal claims (e.g. sell-in-May) by backtesting them on real data instead of taking the folklore at face value.
+- Size and backtest hedges — market-beta, diversifiers, exposure trims — to cut downside risk.
+- Price and reason about options locally: Black-Scholes value, the Greeks, implied volatility, and multi-leg payoffs (covered calls, spreads, straddles).
+- Reason about fixed income — bonds, the price↔yield relationship, duration and rate risk — and pick a bond ETF for a goal.
+- Analyze companies and long-term holdings through a value-investing (Buffett/Munger) lens.
+- **/profile** tailors the agent to how you actually invest (archetype, risk, return target, frequency, horizon); **/login-ti** and **/logout-all** manage your TradeInsight sign-in and connected LLM provider.
+- Fetch daily OHLCV price history (cached locally), multi-symbol quotes and detailed single-symbol snapshots (50/100/200-day averages, 52-week high/low), and recent congressional & corporate-insider trades by ticker — quotes are exchange-delayed (~15 min for US).
+- Bring your own LLM provider (BYOK) and sign in to TradeInsight to sync your profile across sessions.
