@@ -5,9 +5,9 @@ description: Install and run the ti finance & trading CLI agent.
 order: 1
 ---
 
-`ti` is TradeInsight's finance & trading CLI agent — an AI coding agent tuned for
-market research, backtesting, and portfolio work, published as
-`@tradeinsight-info/ti`.
+`ti` is TradeInsight's finance & trading CLI agent — think of it as Claude Code
+for quants and traders. It researches the market, backtests strategies, and works
+on portfolios in plain language, published as `@tradeinsight-info/ti`.
 
 ## Requirements
 
@@ -16,13 +16,8 @@ market research, backtesting, and portfolio work, published as
 ## Install
 
 ```bash
-npm install -g @tradeinsight-info/ti
-```
-
-Or with [Bun](https://bun.sh):
-
-```bash
 bun install -g @tradeinsight-info/ti
+# or: npm install -g @tradeinsight-info/ti
 ```
 
 ## Run
@@ -34,10 +29,74 @@ ti
 This starts an interactive session. Ask it to pull market data, sketch a
 strategy, or run a backtest, and it works through the task step by step.
 
+## First run — sign in
+
+On first launch `ti` opens a TradeInsight sign-in in your browser. You can keep
+working while it's open, and declining is fine — but signing in enables profile
+sync and access to TradeInsight-hosted models.
+
+Two quick steps at the prompt:
+
+1. **`/login-ti`** — sign in to TradeInsight (opens the browser). Runs
+   automatically on first start; use it any time to sign in again.
+2. **`/login`** — connect the model you want to run `ti` with (see below).
+
+Then pick a model with **`/model`**.
+
+Your TradeInsight sign-in and your model credentials are separate. LLM provider
+keys stay on your machine — only your TradeInsight token is sent to TradeInsight.
+
+## Choose your model
+
+`ti` is bring-your-own-model. `/login` connects your own provider — supported:
+OpenAI Codex, OpenCode Zen, GitHub Copilot, Anthropic API, OpenAI API, AWS
+Bedrock, and more. Use `/model` to pick which one a session runs on.
+
+If you're signed in to TradeInsight, you can also use **TradeInsight-hosted
+models** (metered, no key of your own required) — handy to get started before
+wiring up a provider.
+
+## Set up your profile (optional)
+
+Run **`/profile`** for a short interview about how you invest — trader vs.
+investor, risk tolerance, horizon, instruments. `ti` tailors its analysis to your
+answers and syncs the profile across your sessions and the web dashboard.
+
 ## What it can do
 
-- Research congressional and corporate-insider trades.
-- Fetch OHLCV price history and market tickers.
-- Draft and backtest systematic strategies with honest in-sample / out-of-sample splits.
+- **Backtest strategies and portfolios** — risk-parity, min-vol, vol-target,
+  momentum, DCA, and leverage — with honest in-sample / out-of-sample splits.
+- **Verify market claims** — strategies, factors, and calendar/seasonal cycles
+  (sell-in-May, momentum, the BTC halving cycle) tested on real data rather than
+  taken as folklore.
+- **Hedge downside risk** — size and backtest beta hedges, diversifiers, and
+  exposure trims.
+- **Price options locally** — Black-Scholes value, the Greeks, implied
+  volatility, and multi-leg payoffs (covered calls, spreads, straddles).
+- **Reason about fixed income** — bonds, duration and rate risk, and picking a
+  bond ETF for a goal.
+- **Analyze companies** through a value-investing (Buffett/Munger) lens, and
+  generate a self-contained stock-analysis report.
+- **Pull market data** — daily OHLCV price history (cached locally), quotes, and
+  recent congressional & corporate-insider trades by ticker.
+
+## Useful commands
+
+| Command | What it does |
+|---------|--------------|
+| `/login-ti` | Sign in to TradeInsight |
+| `/login` | Connect your LLM provider |
+| `/model` | Choose the model for this session |
+| `/profile` | Set up your trading profile |
+| `/logout-all` | Sign out of TradeInsight and every connected provider |
+| `/new`, `/resume` | Start a new session or resume a previous one |
+
+Type `/` at the prompt to see every available command.
+
+## Good to know
+
+- `ti` **never places orders or connects to a broker** — you stay in control.
+- Market data is **exchange-delayed** (~15 min for US quotes), so `ti` is built
+  for research and swing/positional analysis, not intraday trading.
 
 See the [changelog](/docs/ti-agent/changelog) for what's new in each release.
