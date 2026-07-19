@@ -5,30 +5,33 @@ description: Create a TradeInsight account and turn on the 7-day Finance Agent A
 order: 2
 ---
 
-`ti` is bring-your-own-model, so you can run it with your own provider from day
-one. But signing in to TradeInsight unlocks the finance features — the full
-insight dataset, live market data, profile sync — and the **7-day AI trial**
-lets you use TradeInsight-hosted models with **no API key of your own**.
+`ti` is bring-your-own-model, so the fastest way to start is to run it with your
+own provider — [GitHub Copilot](/docs/ti-agent/github-copilot),
+[ChatGPT (Codex)](/docs/ti-agent/codex-subscription), or an
+[Anthropic API key](/docs/ti-agent/anthropic-api). Signing in to TradeInsight
+adds the finance features on top — the full insight dataset, live market data,
+and profile sync.
 
-The trial is **free, self-serve, and needs no credit card**. Here's the whole
-flow.
+**TradeInsight-provided models are a work in progress** and not available yet.
+If you'd like to run `ti` on models we host — no key of your own — we'd love to
+hear from you: [get in touch](https://tradeinsight.info/contact) to register your
+interest, and start the free trial below.
 
-## 1. Create your TradeInsight account
+## 1. Create your account
 
-Sign up at **[app.tradeinsight.info](https://app.tradeinsight.info)**. Sign-in is
-passwordless — enter your email, then paste the one-time code we send you. That's
-the account the CLI signs in to as well.
+Go straight to **[app.tradeinsight.info/upgrade/ai-max](https://app.tradeinsight.info/upgrade/ai-max)** —
+the Finance Agent page. If you don't have an account yet you'll sign in first:
+it's passwordless — enter your email, paste the one-time code we send, and you
+land back on the Finance Agent page. That same account is what the CLI signs in
+to.
 
-## 2. Start the free AI trial
+## 2. Start the free trial
 
-Once you're signed in, open **[app.tradeinsight.info/upgrade](https://app.tradeinsight.info/upgrade)**,
-pick **Finance Agent**, and click **Start free AI trial**.
+On the Finance Agent page, click **Start free AI trial**.
 
-- Free for **7 days**, then $0 until you choose to upgrade.
-- **No card required.**
-- One trial per account.
+- Free for **7 days**, no credit card, one per account.
 
-You'll see the days remaining on the same page once it's active.
+Meanwhile, connect your own provider (below) so you're up and working right now.
 
 ## 3. Install the CLI
 
@@ -54,33 +57,21 @@ At the prompt:
    automatically on first launch; use it any time to refresh your session. Your
    TradeInsight token is the only thing sent to TradeInsight — LLM provider keys
    never leave your machine.
-2. **`/model`** — pick a **TradeInsight-hosted model** to run on the trial, or
-   run **`/login`** first to connect [your own provider](/docs/ti-agent/getting-started#choose-your-model).
+2. **`/login`** — connect your own model provider (Copilot, Codex, Anthropic, and
+   more), then **`/model`** to pick which one this session runs on.
 
 That's it — you're set up and can start asking `ti` to pull data, sketch a
 strategy, or run a backtest.
 
 ## When the trial ends
 
-The AI trial lasts 7 days. After that, TradeInsight-hosted models stop
-responding (you'll see a clear message with an upgrade link), but everything
-else keeps working:
-
-- **Bring your own model** — connect a provider with `/login` and `ti` runs on
-  that with no trial required. See [GitHub Copilot](/docs/ti-agent/github-copilot)
-  or [ChatGPT (Codex)](/docs/ti-agent/codex-subscription).
-- **Finance data & tools** — quotes, price history, and insider/congress lookups
-  stay available while you're signed in.
-
-To keep using hosted models, upgrade from
-[app.tradeinsight.info/upgrade](https://app.tradeinsight.info/upgrade).
+After 7 days the trial closes. We're working towards a paid subscription for
+TradeInsight-provided models. Need more trial time? [Get in touch](https://tradeinsight.info/contact),
+tell us what you're building and why you'd like more, and we'll sort it out.
 
 ## Troubleshooting
 
-- **"No LLM access" / 401** — you're signed in but the trial isn't active. Start
-  it at [/upgrade](https://app.tradeinsight.info/upgrade), then run `/login-ti`
-  in the CLI to refresh your token.
-- **"Your AI trial has ended" / 403** — the 7-day window closed. Connect your own
-  provider or upgrade.
 - **Sign-in didn't open a browser** — `/login-ti` prints a URL; open it manually,
   finish signing in, and the CLI continues automatically.
+- **No model responding** — you haven't connected a provider yet. Run `/login`,
+  pick your provider, then `/model`. See [Choose your model](/docs/ti-agent/getting-started#choose-your-model).

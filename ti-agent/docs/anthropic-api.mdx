@@ -1,0 +1,97 @@
+---
+title: Use an Anthropic API key
+date: 2026-07-20
+description: Run ti on your own Anthropic (Claude) API key — or any Anthropic/OpenAI-compatible endpoint.
+order: 5
+---
+
+Prefer pay-as-you-go over a subscription? Run `ti` on your own **Anthropic
+(Claude) API key**. `ti` is bring-your-own-model — no TradeInsight AI trial
+needed — and you can point it at Anthropic directly or at any
+Anthropic/OpenAI-compatible gateway.
+
+## Requirements
+
+- An **Anthropic API key** (`sk-ant-…`) from the [Anthropic Console](https://console.anthropic.com).
+- `ti` installed — see [Getting started](/docs/ti-agent/getting-started).
+
+## Connect Anthropic
+
+Start `ti`, then at the prompt:
+
+```
+/login
+```
+
+Select **Anthropic**, then choose **API key** when asked for the auth type.
+Paste your key and you're ready.
+
+Prefer an environment variable? Set it before launching `ti`:
+
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+ti
+```
+
+## Pick a model
+
+```
+/model
+```
+
+Pick any Claude model your key has access to and start working.
+
+## Use a compatible endpoint
+
+To route Anthropic traffic through a proxy or gateway — or to add another
+Anthropic/OpenAI-compatible provider — edit `~/.ti/agent/models.json`.
+
+Override the Anthropic endpoint:
+
+```json
+{
+  "providers": {
+    "anthropic": { "baseUrl": "https://your-gateway.example.com/v1" }
+  }
+}
+```
+
+Or register a compatible provider of your own:
+
+```json
+{
+  "providers": {
+    "my-gateway": {
+      "baseUrl": "https://your-gateway.example.com/v1",
+      "apiKey": "$MY_GATEWAY_KEY",
+      "api": "anthropic-messages",
+      "headers": { "x-custom-header": "$MY_HEADER" },
+      "models": [{ "id": "claude-...", "name": "My Claude" }]
+    }
+  }
+}
+```
+
+- `api` accepts `anthropic-messages`, `openai-completions`, `openai-responses`,
+  or `google-generative-ai`.
+- Key and header values support `$ENV_VAR` interpolation or `!command` to shell
+  out, so no secret has to sit in the file in plain text.
+
+## Your credentials stay on your machine
+
+**We never see your API key.** `ti` runs locally and talks to Anthropic (or your
+gateway) directly. Your key is stored on your own machine in
+`~/.ti/agent/auth.json` (readable only by you) and is **never sent to or stored
+by TradeInsight**. The only thing TradeInsight ever receives is your TradeInsight
+sign-in token, and only if you choose to run `/login-ti`.
+
+## Your strategy ideas stay local, too
+
+Your research stays yours. The strategies you sketch, the code `ti` writes, and
+the backtests it runs all execute on your own machine — TradeInsight never sees
+your ideas, your positions, or your results.
+
+## Good to know
+- **Switching providers.** Connect several providers and swap with `/model`. Use
+  `/logout` to remove Anthropic, or `/logout-all` to clear every connected
+  provider.

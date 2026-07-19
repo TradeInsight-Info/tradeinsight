@@ -48,9 +48,17 @@ start working.
 
 **We never see your Copilot credentials.** `ti` runs locally and talks to GitHub
 directly — your Copilot token is stored on your own machine in
-`~/.pi/agent/auth.json`, and refreshes there automatically. It is **never sent to
+`~/.ti/agent/auth.json`, and refreshes there automatically. It is **never sent to
 or stored by TradeInsight**. The only thing TradeInsight ever receives is your
 TradeInsight sign-in token, and only if you choose to run `/login-ti`.
+
+## Your strategy ideas stay local, too
+
+Your research stays yours. The strategies you sketch, the code `ti` writes, and
+the backtests it runs all execute **on your own machine** — TradeInsight never
+sees your ideas, your positions, or your results. `ti` only reaches out for
+market data (and profile sync, if you're signed in); the analysis and every
+backtest run locally.
 
 ## Good to know
 - **"Model not supported"?** Some models must be enabled on your account first.
