@@ -1,0 +1,58 @@
+---
+title: Use a ChatGPT (Codex) subscription
+date: 2026-07-18
+description: Run ti on your ChatGPT Plus or Pro subscription via Codex — connect it once with /login.
+order: 4
+---
+
+Have a **ChatGPT Plus or Pro** subscription? You can run `ti` on it through
+**Codex** — OpenAI's officially endorsed path for using a ChatGPT subscription
+in third-party tools. No separate API key, no TradeInsight AI trial required.
+
+## Requirements
+
+- An active **ChatGPT Plus** or **ChatGPT Pro** subscription.
+- `ti` installed — see [Getting started](/docs/ti-agent/getting-started).
+
+## Connect your subscription
+
+Start `ti`, then at the prompt:
+
+```
+/login
+```
+
+Select **ChatGPT Plus/Pro (Codex)** from the provider list.
+
+`ti` opens ChatGPT in your browser to authorize. Sign in with the account that
+holds your subscription, approve the request, and the CLI picks up the session
+automatically. If the browser doesn't open, `ti` prints a URL you can open
+manually.
+
+## Pick a model
+
+Once connected, choose the model for the session:
+
+```
+/model
+```
+
+`ti` lists the Codex models available on your ChatGPT plan. Pick one and start
+working.
+
+## Your credentials stay on your machine
+
+**We never see your ChatGPT credentials.** `ti` runs locally and talks to OpenAI
+directly — your Codex token is stored on your own machine in
+`~/.pi/agent/auth.json`, and refreshes there automatically. It is **never sent to
+or stored by TradeInsight**. The only thing TradeInsight ever receives is your
+TradeInsight sign-in token, and only if you choose to run `/login-ti`.
+
+## Good to know
+- **Plus vs. Pro.** Both work; Pro simply carries higher usage limits. Codex
+  usage draws on your ChatGPT plan, not a per-token API bill.
+- **API key instead?** If you'd rather use a pay-as-you-go OpenAI API key, set
+  `OPENAI_API_KEY` in your environment before launching `ti`, or pick **OpenAI**
+  (not Codex) under `/login`.
+- **Switching providers.** Connect several providers and swap with `/model`. Use
+  `/logout` to remove Codex, or `/logout-all` to clear every connected provider.

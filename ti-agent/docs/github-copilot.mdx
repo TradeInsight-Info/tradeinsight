@@ -1,0 +1,61 @@
+---
+title: Use GitHub Copilot
+date: 2026-07-18
+description: Run ti on your GitHub Copilot subscription — connect it once with /login.
+order: 3
+---
+
+If you already pay for **GitHub Copilot**, you can run `ti` on it — no separate
+API key, no TradeInsight AI trial needed. `ti` is bring-your-own-model, and
+Copilot is one of the supported subscriptions.
+
+## Requirements
+
+- An active **GitHub Copilot** subscription (Individual, Business, or Enterprise).
+- `ti` installed — see [Getting started](/docs/ti-agent/getting-started).
+
+## Connect Copilot
+
+Start `ti`, then at the prompt:
+
+```
+/login
+```
+
+Select **GitHub Copilot** from the provider list.
+
+You'll be asked which GitHub host to use:
+
+- Press **Enter** for **github.com** (the default for most people).
+- Or enter your **GitHub Enterprise Server** domain if your Copilot seat is on a
+  self-hosted GitHub.
+
+`ti` then shows a **device code** and opens GitHub in your browser. Enter the
+code to authorize, and the CLI picks up the session automatically.
+
+## Pick a model
+
+Once connected, choose a Copilot-backed model for the session:
+
+```
+/model
+```
+
+`ti` lists the tool-capable models available on your Copilot plan. Pick one and
+start working.
+
+## Your credentials stay on your machine
+
+**We never see your Copilot credentials.** `ti` runs locally and talks to GitHub
+directly — your Copilot token is stored on your own machine in
+`~/.pi/agent/auth.json`, and refreshes there automatically. It is **never sent to
+or stored by TradeInsight**. The only thing TradeInsight ever receives is your
+TradeInsight sign-in token, and only if you choose to run `/login-ti`.
+
+## Good to know
+- **"Model not supported"?** Some models must be enabled on your account first.
+  In VS Code open **Copilot Chat → model selector → select the model → Enable**,
+  then retry `/model` in `ti`.
+- **Switching providers.** You can connect several providers and swap between
+  them with `/model`. Use `/logout` to remove Copilot, or `/logout-all` to clear
+  every connected provider at once.
