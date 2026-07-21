@@ -1,8 +1,17 @@
 ---
 title: ti CLI agent
-date: 2026-07-18
+date: 2026-07-21
 description: Release notes for the ti finance & trading CLI agent.
 ---
+
+#### v0.2.1 — 2026-07-21
+
+- New **/watch** command — keep a watchlist that syncs across your sessions: `/watch AAPL` to add, `/watch` to see it, `/watch remove AAPL` to drop one. It only accepts real ticker symbols, so a stray phrase won't clutter your list.
+- New **/help** command — a quick signpost for getting started or when you're unsure what to ask: what ti is, the core commands, and example prompts to copy.
+- New **technical-analysis** skill — ti computes indicators (moving averages, RSI, MACD, Bollinger Bands, and more) and can build and backtest signals from them.
+- Options pricing now covers **American-style options** (early exercise, via a binomial model) alongside European Black-Scholes — both with the Greeks. The skill is now simply **options**.
+- More trustworthy backtests — an additional engine suited to longer-horizon strategies, more realistic execution and cost modeling, and graceful fallback when an optional dependency is missing, so results track reality more closely.
+- Faster price-history fetches — ti fills only the missing date ranges from its local cache instead of re-downloading, so repeat requests return quickly.
 
 #### v0.2.0 — 2026-07-18
 
