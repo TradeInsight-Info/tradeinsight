@@ -1,8 +1,14 @@
 ---
 title: ti CLI agent
-date: 2026-07-22
+date: 2026-07-23
 description: Release notes for the ti finance & trading CLI agent.
 ---
+
+#### v0.2.3 — 2026-07-23
+
+- Price-history fetches for ETFs (like SPY and BIL) now return the full requested range. Previously an ETF could come back with only the last couple of months — and because that short slice was cached as if complete, repeat requests kept serving it; ti now fetches the whole span (paging through long ranges) and never records a partial download as complete.
+- When a data source genuinely lacks older history for a symbol, ti now tells you the earliest date it has, instead of leaving a short result looking like a plan limit.
+- ti now greets you with a logo banner at startup.
 
 #### v0.2.2 — 2026-07-22
 
