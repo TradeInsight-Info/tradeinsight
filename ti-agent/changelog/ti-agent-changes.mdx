@@ -1,8 +1,14 @@
 ---
 title: ti CLI agent
-date: 2026-07-27
+date: 2026-08-02
 description: Release notes for the ti finance & trading CLI agent.
 ---
+
+#### v0.3.0 — 2026-08-02
+
+- **Corrected historical prices for any stock that has split.** Adjusted closing prices were being scaled the wrong way across a split, so a long-run chart or backtest on a split ticker could be badly wrong — AAPL's 3 January 2007 close read as $2,215.84 where the correct figure is $2.83. Adjusted volume was affected the same way. Prices for shares that have never split, and all dividend adjustments, were always correct and are unchanged.
+- **Upgrading clears your cached price files.** Anything ti had already downloaded was stored with the old figures, so the cache is rebuilt from scratch the next time you ask for a symbol. Nothing is required from you. On the free plan, history older than your rolling one-year window cannot be downloaded again, so it will not come back after the rebuild.
+- If you have run a backtest or read a long-run chart for a stock that split — anything with a stock split in the period you looked at — it is worth running again.
 
 #### v0.2.4 — 2026-07-27
 
